@@ -39,7 +39,11 @@ fun MainNavigation(
         }
 
         composable<MainDestinations.SelectGenere> {
-            FiltersScreen()
+            FiltersScreen(
+                goToList = {
+                    navController.navigateUp()
+                }
+            )
         }
     }
 }

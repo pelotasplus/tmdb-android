@@ -10,8 +10,10 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import pl.pelotasplus.tmdb.data.repository.GenreRepository
 import pl.pelotasplus.tmdb.features.filters.FiltersContract.Effect
+import pl.pelotasplus.tmdb.features.filters.FiltersContract.Event
 import pl.pelotasplus.tmdb.features.filters.FiltersContract.State
 import javax.inject.Inject
 
@@ -36,5 +38,21 @@ class FiltersViewModel @Inject constructor(
                 }
             }
             .launchIn(viewModelScope)
+    }
+
+    fun onEvent(event: Event) {
+        when (event) {
+            Event.OnBackClicked -> {
+                viewModelScope.launch {
+                    _effect.send(Effect.NavigateBack())
+                }
+            }
+
+            is Event.OnGenreClicked -> {
+                viewModelScope.launch {
+                    _effect.send(Effect.NavigateBack(event.genre))
+                }
+            }
+        }
     }
 }

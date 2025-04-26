@@ -12,10 +12,11 @@ interface FiltersContract {
     )
 
     sealed interface Event {
-
+        data object OnBackClicked : Event
+        data class OnGenreClicked(val genre: Genre) : Event
     }
 
     sealed interface Effect {
-
+        data class NavigateBack(val selection: Genre? = null) : Effect
     }
 }
