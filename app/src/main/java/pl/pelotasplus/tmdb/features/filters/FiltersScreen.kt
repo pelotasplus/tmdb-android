@@ -17,5 +17,7 @@ fun FiltersScreen(
     FiltersContent(
         state = state,
         modifier = modifier,
+        onGenreSelect = {
+        },
     )
 }
