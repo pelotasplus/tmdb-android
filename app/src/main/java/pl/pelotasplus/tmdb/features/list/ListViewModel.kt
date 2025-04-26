@@ -1,19 +1,24 @@
 package pl.pelotasplus.tmdb.features.list
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
-import pl.pelotasplus.tmdb.domain.model.Movie
+import pl.pelotasplus.tmdb.data.repository.MovieRepository
 import pl.pelotasplus.tmdb.features.list.ListContract.Effect
 import pl.pelotasplus.tmdb.features.list.ListContract.State
 import javax.inject.Inject
 
 @HiltViewModel
-class ListViewModel @Inject constructor() : ViewModel() {
+class ListViewModel @Inject constructor(
+    movieRepository: MovieRepository
+) : ViewModel() {
 
     private val _state = MutableStateFlow(State())
     internal val state = _state.asStateFlow()
@@ -22,14 +27,15 @@ class ListViewModel @Inject constructor() : ViewModel() {
     internal val effect = _effect.receiveAsFlow()
 
     init {
-        _state.update {
-            it.copy(
-                movies = listOf(
-                    Movie("Movie 1", "https://example.com/image.jpg"),
-                    Movie("Movie 2", "https://example.com/image.jpg"),
-                    Movie("Movie 3", "https://example.com/image.jpg"),
-                )
-            )
-        }
+        movieRepository.getMovies()
+            .onEach { movies ->
+                _state.update {
+                    it.copy(
+                        loading = false,
+                        movies = movies
+                    )
+                }
+            }
+            .launchIn(viewModelScope)
     }
 }
