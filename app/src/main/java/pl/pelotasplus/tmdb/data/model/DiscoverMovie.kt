@@ -12,8 +12,12 @@ data class DiscoverMovie(
     @SerialName("vote_average") val voteAverage: Double,
 )
 
-fun DiscoverMovie.toMovie() =
+fun DiscoverMovie.toMovie(movieDetails: MovieDetailsResponse) =
     Movie(
+        id = id,
         title = title,
-        cover = posterPath
+        cover = posterPath,
+        budget = movieDetails.budget / 1_000_000f,
+        revenue = movieDetails.revenue / 1_000_000f,
+        rating = voteAverage,
     )

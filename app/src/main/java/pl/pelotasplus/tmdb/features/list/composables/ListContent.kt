@@ -62,7 +62,11 @@ private fun ListContentLoadedPreview() {
             movies = listOf(
                 Movie(
                     title = "Movie 1",
-                    cover = "https://image.tmdb.org/t/p/w500/movie1.jpg"
+                    cover = "https://image.tmdb.org/t/p/w500/movie1.jpg",
+                    id = 1,
+                    budget = 124f,
+                    revenue = 567f,
+                    rating = 4.123
                 )
             )
         )

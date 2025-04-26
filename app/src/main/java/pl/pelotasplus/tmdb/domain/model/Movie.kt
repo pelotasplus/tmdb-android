@@ -1,7 +1,11 @@
 package pl.pelotasplus.tmdb.domain.model
 
 data class Movie(
+    val id: Long,
     val title: String,
-    val cover: String
+    val cover: String,
+    val rating: Double,
+    val budget: Float,
+    val revenue: Float
 )
 

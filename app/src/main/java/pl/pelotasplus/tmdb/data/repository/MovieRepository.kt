@@ -15,8 +15,11 @@ class MovieRepository @Inject constructor(
         return flow {
             val response = service.getMovies(null)
             emit(response.results)
-        }.map {
-            it.map { it.toMovie() }
+        }.map { movies ->
+            movies.map { discoveryMovie ->
+                val movieDetailsResponse = service.getMovieDetails(discoveryMovie.id)
+                discoveryMovie.toMovie(movieDetailsResponse)
+            }
         }
     }
 }
