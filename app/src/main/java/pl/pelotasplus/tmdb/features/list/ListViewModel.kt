@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import pl.pelotasplus.tmdb.data.repository.MovieRepository
 import pl.pelotasplus.tmdb.features.list.ListContract.Effect
 import pl.pelotasplus.tmdb.features.list.ListContract.State
@@ -22,10 +23,10 @@ class ListViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(State())
-    internal val state = _state.asStateFlow()
+    val state = _state.asStateFlow()
 
     private val _effect = Channel<Effect>()
-    internal val effect = _effect.receiveAsFlow()
+    val effect = _effect.receiveAsFlow()
 
     init {
         movieRepository.getMovies()
@@ -41,5 +42,15 @@ class ListViewModel @Inject constructor(
                 it.printStackTrace()
             }
             .launchIn(viewModelScope)
+    }
+
+    fun onEvent(event: ListContract.Event) {
+        when (event) {
+            ListContract.Event.OnFabClicked -> {
+                viewModelScope.launch {
+                    _effect.send(Effect.NavigateToFilters)
+                }
+            }
+        }
     }
 }

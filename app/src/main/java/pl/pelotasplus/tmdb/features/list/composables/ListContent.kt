@@ -7,20 +7,33 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import pl.pelotasplus.tmdb.R
 import pl.pelotasplus.tmdb.domain.model.Movie
 import pl.pelotasplus.tmdb.features.list.ListContract
 
 @Composable
 internal fun ListContent(
     state: ListContract.State,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onFabClick: () -> Unit = {},
 ) {
-    Scaffold {
+    Scaffold(
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                onClick = onFabClick
+            ) {
+                Text(stringResource(R.string.list_filter_genres))
+            }
+        }
+    ) {
         if (state.loading) {
             Box(
                 modifier = modifier

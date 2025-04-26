@@ -3,7 +3,7 @@ package pl.pelotasplus.tmdb.features.list
 import androidx.compose.runtime.Stable
 import pl.pelotasplus.tmdb.domain.model.Movie
 
-internal interface ListContract {
+interface ListContract {
 
     @Stable
     data class State(
@@ -12,10 +12,10 @@ internal interface ListContract {
     )
 
     sealed interface Event {
-
+        data object OnFabClicked : Event
     }
 
     sealed interface Effect {
-
+        data object NavigateToFilters : Effect
     }
 }

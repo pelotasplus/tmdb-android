@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.Serializable
+import pl.pelotasplus.tmdb.features.filters.FiltersScreen
 import pl.pelotasplus.tmdb.features.list.ListScreen
 
 sealed interface MainDestinations {
@@ -14,7 +15,7 @@ sealed interface MainDestinations {
 
     @Serializable
     data class SelectGenere(
-        val selectedGenere: String,
+        val selectedGenere: Int,
     ) : MainDestinations
 }
 
@@ -30,10 +31,15 @@ fun MainNavigation(
         startDestination = MainDestinations.MovieList
     ) {
         composable<MainDestinations.MovieList> {
-            ListScreen()
+            ListScreen(
+                goToFilters = {
+                    navController.navigate(MainDestinations.SelectGenere(-1))
+                }
+            )
         }
 
         composable<MainDestinations.SelectGenere> {
+            FiltersScreen()
         }
     }
 }
