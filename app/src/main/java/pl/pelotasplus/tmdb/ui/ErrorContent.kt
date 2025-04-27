@@ -19,7 +19,7 @@ import pl.pelotasplus.tmdb.R
 fun ErrorContent(
     error: Throwable,
     modifier: Modifier = Modifier,
-    onRetryClick: () -> Unit
+    onRetryClick: () -> Unit = {}
 ) {
     Box(
         modifier = modifier

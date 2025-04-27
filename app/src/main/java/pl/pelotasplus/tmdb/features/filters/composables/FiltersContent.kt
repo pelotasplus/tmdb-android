@@ -69,7 +69,7 @@ fun FiltersContent(
             }
         } else if (state.error != null) {
             ErrorContent(
-                modifier = modifier.padding(it),
+                modifier = Modifier.padding(it),
                 error = state.error,
                 onRetryClick = onRetryClick
             )

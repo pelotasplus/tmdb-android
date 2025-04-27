@@ -46,7 +46,7 @@ internal fun ListContent(
     ) {
         if (state.loading) {
             Box(
-                modifier = modifier
+                modifier = Modifier
                     .padding(it)
                     .fillMaxSize()
             ) {
@@ -57,7 +57,7 @@ internal fun ListContent(
             }
         } else if (state.error != null) {
             ErrorContent(
-                modifier = modifier.padding(it),
+                modifier = Modifier.padding(it),
                 error = state.error,
                 onRetryClick = onRetryClick
             )
