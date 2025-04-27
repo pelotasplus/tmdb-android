@@ -7,6 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import pl.pelotasplus.tmdb.data.source.AuthorizationInterceptor
 import pl.pelotasplus.tmdb.data.source.TmdbService
 import retrofit2.Retrofit
@@ -36,14 +37,29 @@ class DataModule {
     fun provideBaseUrl() =
         "https://api.themoviedb.org"
 
+    @Provides
+    fun provideLoggingInterceptor() =
+        HttpLoggingInterceptor(
+            object : HttpLoggingInterceptor.Logger {
+                override fun log(message: String) {
+                    println(message)
+                }
+            }
+        ).apply {
+            setLevel(HttpLoggingInterceptor.Level.BODY)
+        }
 
     @Provides
-    fun provideClient(@Named(READ_ACCESS_TOKEN) token: String) =
+    fun provideClient(
+        @Named(READ_ACCESS_TOKEN) token: String,
+        loggingInterceptor: HttpLoggingInterceptor
+    ) =
         OkHttpClient.Builder()
             .callTimeout(NETWORK_TIMEOUT, TimeUnit.MILLISECONDS)
             .readTimeout(NETWORK_TIMEOUT, TimeUnit.MILLISECONDS)
             .connectTimeout(NETWORK_TIMEOUT, TimeUnit.MILLISECONDS)
             .addInterceptor(AuthorizationInterceptor(token))
+            .addInterceptor(loggingInterceptor)
             .build()
 
     @Provides

@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.retrofit)
     implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
     implementation(libs.converter.kotlinx.serialization)
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
