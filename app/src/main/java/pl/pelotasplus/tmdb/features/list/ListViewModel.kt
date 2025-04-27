@@ -48,7 +48,8 @@ class ListViewModel @Inject constructor(
                     .onStart {
                         _state.update {
                             it.copy(
-                                loading = true
+                                loading = true,
+                                error = null
                             )
                         }
                     }

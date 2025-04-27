@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import pl.pelotasplus.tmdb.R
 import pl.pelotasplus.tmdb.domain.model.Movie
 import pl.pelotasplus.tmdb.features.list.ListContract
+import pl.pelotasplus.tmdb.ui.ErrorContent
 
 @Composable
 internal fun ListContent(
@@ -55,32 +56,11 @@ internal fun ListContent(
                 )
             }
         } else if (state.error != null) {
-            Box(
-                modifier = modifier
-                    .padding(it)
-                    .fillMaxSize()
-            ) {
-                Column(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                ) {
-                    Text(
-                        text = stringResource(
-                            R.string.list_error_message,
-                            state.error.message ?: "Unknown error"
-                        ),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Button(
-                        onRetryClick
-                    ) {
-                        Text(stringResource(R.string.global_retry))
-                    }
-                }
-            }
+            ErrorContent(
+                modifier = modifier.padding(it),
+                error = state.error,
+                onRetryClick = onRetryClick
+            )
         } else {
             LazyVerticalGrid(
                 modifier = Modifier

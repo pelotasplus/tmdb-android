@@ -8,8 +8,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -39,7 +41,7 @@ class FiltersViewModel @Inject constructor(
     internal val effect = _effect.receiveAsFlow()
 
     init {
-        onEvent(FiltersContract.Event.LoadGenres(navArgs.selectedGenre))
+        onEvent(Event.LoadGenres(navArgs.selectedGenre))
     }
 
     fun onEvent(event: Event) {
@@ -58,6 +60,14 @@ class FiltersViewModel @Inject constructor(
 
             is Event.LoadGenres -> {
                 geneRepository.getGenres()
+                    .onStart {
+                        _state.update {
+                            it.copy(
+                                loading = true,
+                                error = null
+                            )
+                        }
+                    }
                     .onEach { genres ->
                         _state.update {
                             it.copy(
@@ -68,7 +78,19 @@ class FiltersViewModel @Inject constructor(
                             )
                         }
                     }
+                    .catch { error ->
+                        _state.update {
+                            it.copy(
+                                loading = false,
+                                error = error
+                            )
+                        }
+                    }
                     .launchIn(viewModelScope)
+            }
+
+            Event.OnRetryClicked -> {
+                onEvent(Event.LoadGenres(navArgs.selectedGenre))
             }
         }
     }

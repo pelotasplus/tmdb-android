@@ -32,6 +32,9 @@ fun FiltersScreen(
         },
         onBackClick = {
             viewModel.onEvent(FiltersContract.Event.OnBackClicked)
+        },
+        onRetryClick = {
+            viewModel.onEvent(FiltersContract.Event.OnRetryClicked)
         }
     )
 }

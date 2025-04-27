@@ -1,6 +1,7 @@
 package pl.pelotasplus.tmdb.features.filters.composables
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -21,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import pl.pelotasplus.tmdb.R
 import pl.pelotasplus.tmdb.domain.model.Genre
 import pl.pelotasplus.tmdb.features.filters.FiltersContract
+import pl.pelotasplus.tmdb.ui.ErrorContent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,7 +31,8 @@ fun FiltersContent(
     state: FiltersContract.State,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
-    onGenreSelect: (Genre) -> Unit = {}
+    onGenreSelect: (Genre) -> Unit = {},
+    onRetryClick: () -> Unit = {},
 ) {
     Scaffold(
         modifier = modifier,
@@ -52,18 +56,37 @@ fun FiltersContent(
             )
         }
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            items(state.genres) {
-                GenreCard(
-                    genre = it,
-                    onGenreSelect = onGenreSelect
+        if (state.loading) {
+            Box(
+                modifier = Modifier
+                    .padding(it)
+                    .fillMaxSize()
+            ) {
+                CircularProgressIndicator(
+                    Modifier
+                        .align(Alignment.Center)
                 )
+            }
+        } else if (state.error != null) {
+            ErrorContent(
+                modifier = modifier.padding(it),
+                error = state.error,
+                onRetryClick = onRetryClick
+            )
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .padding(it)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(state.genres) {
+                    GenreCard(
+                        genre = it,
+                        onGenreSelect = onGenreSelect
+                    )
+                }
             }
         }
     }

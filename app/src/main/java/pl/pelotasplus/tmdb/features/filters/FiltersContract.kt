@@ -8,12 +8,14 @@ interface FiltersContract {
     @Stable
     data class State(
         val loading: Boolean = true,
+        val error: Throwable? = null,
         val genres: List<Genre> = emptyList()
     )
 
     sealed interface Event {
         data class LoadGenres(val genreId: Int?) : Event
         data object OnBackClicked : Event
+        data object OnRetryClicked : Event
         data class OnGenreClicked(val genre: Genre) : Event
     }
 

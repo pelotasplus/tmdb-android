@@ -18,6 +18,7 @@ private const val READ_ACCESS_TOKEN = "DataModule/READ_ACCESS_TOKEN"
 private const val BASE_URL = "DataModule/BASE_URL"
 const val RETRY_COUNT = 3
 const val NETWORK_TIMEOUT = 30_000L
+const val RETRY_TIMEOUT = 5_000L
 
 @InstallIn(SingletonComponent::class)
 @Module

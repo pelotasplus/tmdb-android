@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.retryWhen
 import pl.pelotasplus.tmdb.data.di.RETRY_COUNT
-import pl.pelotasplus.tmdb.data.di.NETWORK_TIMEOUT
+import pl.pelotasplus.tmdb.data.di.RETRY_TIMEOUT
 import pl.pelotasplus.tmdb.data.model.toMovie
 import pl.pelotasplus.tmdb.data.source.TmdbService
 import pl.pelotasplus.tmdb.domain.model.Movie
@@ -27,7 +27,7 @@ class MovieRepository @Inject constructor(
             }
         }.retryWhen { cause, attempt ->
             if (cause is HttpException && attempt < RETRY_COUNT) {
-                delay(NETWORK_TIMEOUT)
+                delay(RETRY_TIMEOUT)
                 true
             } else {
                 false
