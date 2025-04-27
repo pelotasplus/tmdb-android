@@ -14,16 +14,6 @@ import pl.pelotasplus.tmdb.features.list.ListContract
 import pl.pelotasplus.tmdb.features.list.ListScreen
 import pl.pelotasplus.tmdb.features.list.ListViewModel
 
-sealed interface MainDestinations {
-    @Serializable
-    data object MovieList : MainDestinations
-
-    @Serializable
-    data class FilterList(
-        val selectedGenre: Int?,
-    ) : MainDestinations
-}
-
 private const val SELECTED_GENRE_KEY = "ListViewModel/SELECTED_GENRE_KEY"
 
 @Composable

@@ -22,11 +22,13 @@ class DataModule {
 
     @Named(READ_ACCESS_TOKEN)
     @Provides
+    @Suppress("FunctionOnlyReturningConstant", "MaxLineLength")
     fun provideAuthorizationToken() =
         ""
 
     @Named(BASE_URL)
     @Provides
+    @Suppress("FunctionOnlyReturningConstant")
     fun provideBaseUrl() =
         "https://api.themoviedb.org"
 

@@ -28,6 +28,7 @@ internal fun ListContent(
     onFabClick: () -> Unit = {},
 ) {
     Scaffold(
+        modifier = modifier,
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = onFabClick
@@ -38,7 +39,7 @@ internal fun ListContent(
     ) {
         if (state.loading) {
             Box(
-                modifier = modifier
+                modifier = Modifier
                     .padding(it)
                     .fillMaxSize()
             ) {
@@ -46,7 +47,7 @@ internal fun ListContent(
             }
         } else {
             LazyVerticalGrid(
-                modifier = modifier
+                modifier = Modifier
                     .padding(it)
                     .padding(16.dp),
                 columns = GridCells.Fixed(2),
