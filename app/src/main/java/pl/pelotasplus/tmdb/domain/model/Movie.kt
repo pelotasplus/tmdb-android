@@ -7,5 +7,9 @@ data class Movie(
     val rating: Double,
     val budget: Float,
     val revenue: Float
-)
+) {
+    fun cover(): String {
+        return "https://image.tmdb.org/t/p/w500$cover"
+    }
+}
 

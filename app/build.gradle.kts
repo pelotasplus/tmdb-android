@@ -63,6 +63,8 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.okhttp)
     implementation(libs.converter.kotlinx.serialization)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 
     kapt(libs.dagger.hilt.compiler)
 

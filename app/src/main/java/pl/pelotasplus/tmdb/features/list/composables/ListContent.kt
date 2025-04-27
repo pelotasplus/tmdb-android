@@ -1,5 +1,6 @@
 package pl.pelotasplus.tmdb.features.list.composables
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import pl.pelotasplus.tmdb.R
 import pl.pelotasplus.tmdb.domain.model.Movie
 import pl.pelotasplus.tmdb.features.list.ListContract
@@ -45,8 +47,11 @@ internal fun ListContent(
         } else {
             LazyVerticalGrid(
                 modifier = modifier
-                    .padding(it),
-                columns = GridCells.Fixed(3)
+                    .padding(it)
+                    .padding(16.dp),
+                columns = GridCells.Fixed(2),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 items(state.movies) { movie ->
                     MovieCard(movie)
