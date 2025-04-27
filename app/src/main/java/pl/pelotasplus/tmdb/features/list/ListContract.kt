@@ -9,12 +9,17 @@ interface ListContract {
     data class State(
         val genreId: Int? = -1,
         val loading: Boolean = true,
+        val error: Throwable? = null,
         val movies: List<Movie> = emptyList()
     )
 
     sealed interface Event {
+        data object OnRetryClicked : Event
         data object OnFabClicked : Event
-        data class LoadMovies(val genreId: Int?) : Event
+        data class LoadMovies(
+            val genreId: Int?,
+            val forceRefresh: Boolean = false
+        ) : Event
     }
 
     sealed interface Effect {

@@ -26,6 +26,9 @@ fun ListScreen(
         state = state,
         onFabClick = {
             viewModel.onEvent(ListContract.Event.OnFabClicked)
-        }
+        },
+        onRetryClick = {
+            viewModel.onEvent(ListContract.Event.OnRetryClicked)
+        },
     )
 }

@@ -2,13 +2,18 @@ package pl.pelotasplus.tmdb.features.list.composables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +31,7 @@ internal fun ListContent(
     state: ListContract.State,
     modifier: Modifier = Modifier,
     onFabClick: () -> Unit = {},
+    onRetryClick: () -> Unit = {},
 ) {
     Scaffold(
         modifier = modifier,
@@ -39,11 +45,41 @@ internal fun ListContent(
     ) {
         if (state.loading) {
             Box(
-                modifier = Modifier
+                modifier = modifier
                     .padding(it)
                     .fillMaxSize()
             ) {
-                CircularProgressIndicator(Modifier.align(Alignment.Center))
+                CircularProgressIndicator(
+                    Modifier
+                        .align(Alignment.Center)
+                )
+            }
+        } else if (state.error != null) {
+            Box(
+                modifier = modifier
+                    .padding(it)
+                    .fillMaxSize()
+            ) {
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                ) {
+                    Text(
+                        text = stringResource(
+                            R.string.list_error_message,
+                            state.error.message ?: "Unknown error"
+                        ),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Button(
+                        onRetryClick
+                    ) {
+                        Text(stringResource(R.string.global_retry))
+                    }
+                }
             }
         } else {
             LazyVerticalGrid(
@@ -60,6 +96,17 @@ internal fun ListContent(
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun ListContentErrorPreview() {
+    ListContent(
+        state = ListContract.State(
+            loading = false,
+            error = Exception("Error")
+        )
+    )
 }
 
 @Preview

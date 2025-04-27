@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pl.pelotasplus.tmdb.data.repository.MovieRepository
 import pl.pelotasplus.tmdb.features.list.ListContract.Effect
+import pl.pelotasplus.tmdb.features.list.ListContract.Effect.NavigateToFilters
 import pl.pelotasplus.tmdb.features.list.ListContract.State
 import javax.inject.Inject
 
@@ -35,12 +36,13 @@ class ListViewModel @Inject constructor(
         when (event) {
             ListContract.Event.OnFabClicked -> {
                 viewModelScope.launch {
-                    _effect.send(Effect.NavigateToFilters(_state.value.genreId))
+                    _effect.send(NavigateToFilters(_state.value.genreId))
                 }
             }
 
             is ListContract.Event.LoadMovies -> {
-                if (_state.value.genreId == event.genreId) return
+                if (_state.value.genreId == event.genreId && !event.forceRefresh)
+                    return
 
                 movieRepository.getMovies(event.genreId)
                     .onStart {
@@ -55,14 +57,31 @@ class ListViewModel @Inject constructor(
                             it.copy(
                                 loading = false,
                                 genreId = event.genreId,
-                                movies = movies
+                                movies = movies,
+                                error = null
                             )
                         }
                     }
-                    .catch {
-                        it.printStackTrace()
+                    .catch { error ->
+                        println("XXX error $error")
+                        _state.update {
+                            it.copy(
+                                loading = false,
+                                error = error,
+                                genreId = event.genreId,
+                            )
+                        }
                     }
                     .launchIn(viewModelScope)
+            }
+
+            ListContract.Event.OnRetryClicked -> {
+                onEvent(
+                    ListContract.Event.LoadMovies(
+                        genreId = _state.value.genreId,
+                        forceRefresh = true
+                    )
+                )
             }
         }
     }

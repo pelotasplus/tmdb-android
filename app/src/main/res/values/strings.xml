@@ -3,7 +3,12 @@
     <string name="movie_card_budget">Budget %1$.2fM</string>
     <string name="movie_card_revenue">Revenue %1$.2fM</string>
     <string name="movie_card_rating">Rating %1$.2f</string>
+
     <string name="list_filter_genres">Filter genres</string>
+    <string name="list_error_message">Error while loading movies: %1$s</string>
+
     <string name="filters_title">Select filter</string>
+
     <string name="global_go_back">Go back</string>
+    <string name="global_retry">Retry</string>
 </resources>
