@@ -12,6 +12,7 @@ interface FiltersContract {
     )
 
     sealed interface Event {
+        data class LoadGenres(val genreId: Int?) : Event
         data object OnBackClicked : Event
         data class OnGenreClicked(val genre: Genre) : Event
     }

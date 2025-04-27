@@ -11,7 +11,7 @@ interface TmdbService {
 
     @GET("/3/discover/movie")
     suspend fun getMovies(
-        @Query("with_genres") genres: String?
+        @Query("with_genres") genres: Int?
     ): DiscoverMovieResponse
 
     @GET("/3/movie/{movieId}")

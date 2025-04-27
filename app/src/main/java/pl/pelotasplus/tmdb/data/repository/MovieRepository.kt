@@ -11,9 +11,9 @@ import javax.inject.Inject
 class MovieRepository @Inject constructor(
     private val service: TmdbService,
 ) {
-    fun getMovies(): Flow<List<Movie>> {
+    fun getMovies(genreId: Int?): Flow<List<Movie>> {
         return flow {
-            val response = service.getMovies(null)
+            val response = service.getMovies(genreId)
             emit(response.results)
         }.map { movies ->
             movies.map { discoveryMovie ->

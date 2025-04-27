@@ -7,15 +7,17 @@ interface ListContract {
 
     @Stable
     data class State(
+        val genreId: Int? = -1,
         val loading: Boolean = true,
         val movies: List<Movie> = emptyList()
     )
 
     sealed interface Event {
         data object OnFabClicked : Event
+        data class LoadMovies(val genreId: Int?) : Event
     }
 
     sealed interface Effect {
-        data object NavigateToFilters : Effect
+        data class NavigateToFilters(val genreId: Int?) : Effect
     }
 }
